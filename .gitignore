@@ -1,3 +1,9 @@
+# === IntelliJ IDEA ===
+.idea/
+*.iws
+*.ipr
+out/
+
 # Compiled class file
 *.class
 
