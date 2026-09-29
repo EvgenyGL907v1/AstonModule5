@@ -1,5 +1,7 @@
+package Car;
+
 public class Car {
-    private final int power;
+  private final int power;
     private final String model;
     private final int year;
 
