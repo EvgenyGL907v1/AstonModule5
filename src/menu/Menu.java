@@ -106,7 +106,6 @@ public class Menu {
         System.out.println("Список очищен.");
     }
 
-    /** Возвращает true, если список не пуст; иначе печатает сообщение. */
     private boolean ensureNotEmpty() {
         if (!service.isCreated()) {
             System.out.println("Список ещё не создан.");

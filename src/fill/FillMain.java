@@ -1,30 +1,36 @@
 package fill;
 
 import car.Car;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class FillMain {
 
     private enum FillType {
-        BACK(0, "назад"),
-        MANUAL(1, "вручную"),
-        FILE(2, "из файла"),
-        RANDOM(3, "рандомно");
+        BACK(0),
+        MANUAL(1),
+        FILE(2),
+        RANDOM(3);
+
+        private static final Map<Integer, FillType> BY_CODE =
+                Arrays.stream(values())
+                        .collect(Collectors.toMap(t -> t.code, t -> t));
 
         private final int code;
-        private final String description;
 
-        FillType(int code, String description) {
+        FillType(int code) {
             this.code = code;
-            this.description = description;
         }
 
         public static FillType fromCode(int code) {
-            for (FillType type : values()) {
-                if (type.code == code) return type;
+            FillType type = BY_CODE.get(code);
+            if (type == null) {
+                throw new IllegalArgumentException("Неверный код: " + code);
             }
-            throw new IllegalArgumentException("Неверный код: " + code);
+            return type;
         }
 
         public FillStrategy createStrategy() {
@@ -32,7 +38,8 @@ public class FillMain {
                 case MANUAL -> new ManualFill();
                 case FILE -> new FileFill();
                 case RANDOM -> new RandomFill();
-                case BACK -> null;
+                case BACK -> throw new UnsupportedOperationException(
+                        "BACK не создаёт стратегию заполнения");
             };
         }
     }

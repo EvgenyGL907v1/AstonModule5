@@ -4,35 +4,40 @@ import car.Car;
 import carSorter.CarSorter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CarService {
 
     public enum SortField {
-        POWER(1, "по мощности"),
-        MODEL(2, "по модели"),
-        YEAR(3, "по году");
+        POWER(1),
+        MODEL(2),
+        YEAR(3);
+
+        private static final Map<Integer, SortField> BY_CODE =
+                Arrays.stream(values())
+                        .collect(Collectors.toMap(f -> f.code, f -> f));
 
         private final int code;
-        private final String description;
-
-        SortField(int code, String description) {
+        SortField(int code) {
             this.code = code;
-            this.description = description;
         }
 
         public static SortField fromCode(int code) {
-            for (SortField field : values()) {
-                if (field.code == code) return field;
+            SortField field = BY_CODE.get(code);
+            if (field == null) {
+                throw new IllegalArgumentException("Неизвестное поле сортировки: " + code);
             }
-            throw new IllegalArgumentException("Неизвестное поле сортировки: " + code);
+            return field;
         }
     }
 
     private final CarSorter sorter;
-    private List<Car> cars = new ArrayList<>();
+    private final List<Car> cars = new ArrayList<>();
     private boolean created = false;
 
     public CarService() {
@@ -45,7 +50,10 @@ public class CarService {
 
     public void setCars(List<Car> cars) {
         Objects.requireNonNull(cars, "cars");
-        this.cars = new ArrayList<>(cars);
+        this.cars.clear();
+        for (Car car : cars) {
+            this.cars.add(Objects.requireNonNull(car, "car"));
+        }
         this.created = true;
     }
 
@@ -77,8 +85,7 @@ public class CarService {
             return List.of();
         }
         return cars.stream()
-                .filter(car -> car.getModel() != null)
-                .filter(car -> car.getModel().equalsIgnoreCase(model))
+                .filter(car -> model.equalsIgnoreCase(car.getModel()))
                 .toList();
     }
 }
