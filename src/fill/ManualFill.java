@@ -1,6 +1,6 @@
-package Fill;
+package fill;
 
-import Car.Car;
+import car.Car;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class ManualFill implements FillStrategy {
             String model = readModel(scanner);
             System.out.println("Введите мощность автомобиля, в числовом виде:");
             int power = readPower(scanner);
-            System.out.println("Введите год производства, в числовом виде. Диапазоном от 1886 до 2036 года:");
+            System.out.println("Введите год производства, в числовом виде. Диапазоном от " + Car.MIN_YEAR + " до " + Car.MAX_YEAR + " года:");
             int year = readYear(scanner);
             result.add(new Car.Builder().setModel(model).setPower(power).setYear(year).build());
         }
@@ -28,7 +28,7 @@ public class ManualFill implements FillStrategy {
     private String readModel(Scanner scanner) {
         while (true) {
             String model = scanner.nextLine();
-            if (model != null && !model.trim().isEmpty()) {
+            if (!model.trim().isEmpty()) {
                 return model;
             }
             System.out.println("Модель не может быть пустой. Введите модель повторно");
@@ -39,6 +39,7 @@ public class ManualFill implements FillStrategy {
         while (true) {
             if (scanner.hasNextInt()) {
                 int power = scanner.nextInt();
+                scanner.nextLine();
                 if (power > 0) {
                     return power;
                 }
@@ -54,13 +55,14 @@ public class ManualFill implements FillStrategy {
         while (true) {
             if (scanner.hasNextInt()) {
                 int year = scanner.nextInt();
-                if (year >= 1886 && year <= 2036) {
+                scanner.nextLine();
+                if (year >= Car.MIN_YEAR && year <= Car.MAX_YEAR) {
                     return year;
                 }
-                System.out.println("Год производства должен быть в диапазон от 1886 до 2036");
+                System.out.println("Год производства должен быть в диапазоне от " + Car.MIN_YEAR + " до " +Car.MAX_YEAR);
             } else {
                 scanner.next();
-                System.out.println("Необходимо ввести числовое значение. Введите мощность повторно");
+                System.out.println("Необходимо ввести числовое значение. Введите год повторно");
             }
         }
     }

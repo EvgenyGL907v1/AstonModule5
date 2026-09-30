@@ -1,6 +1,6 @@
-package Fill;
+package fill;
 
-import Car.Car;
+import car.Car;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ public class RandomFill implements FillStrategy {
         List<Car> result = new ArrayList<>();
 
         for (int i = 0; i < length; i++) {
-            String model = MODELS[random.nextInt(0,6)];
-            int power = random.nextInt(50, 201);
-            int year = random.nextInt(1886, 2037);
+            String model = MODELS[random.nextInt(MODELS.length)];
+            int power = random.nextInt(Car.MIN_POWER, 201);
+            int year = random.nextInt(Car.MIN_YEAR, Car.MAX_YEAR + 1);
             result.add(new Car.Builder().setModel(model).setPower(power).setYear(year).build());
         }
         return result;
