@@ -1,58 +1,75 @@
 package fill;
 
 import car.Car;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class FillMain {
-    private static final Map<Integer, FillStrategy> STRATEGIES = new HashMap<>();
 
-    static {
-        STRATEGIES.put(1, new ManualFill());
-        STRATEGIES.put(2, new FileFill());
-        STRATEGIES.put(3, new RandomFill());
-    }
+    private enum FillType {
+        BACK(0, "назад"),
+        MANUAL(1, "вручную"),
+        FILE(2, "из файла"),
+        RANDOM(3, "рандомно");
 
-    public static List<Car> fillMain(Scanner scanner) {
-        System.out.println("Введите длину массива:");
-        int length = setLength(scanner);
-        System.out.println("Выберите способ заполнения: 1 - вручную, 2 - из файла, 3 - рандомно");
-        int strategy = setStrategy(scanner);
-        CarFiller filler = new CarFiller(STRATEGIES.get(strategy));
-        return filler.fill(length);
-    }
+        private final int code;
+        private final String description;
 
-    private static int setLength(Scanner scanner) {
-        while (true) {
-            if (scanner.hasNextInt()) {
-                int scan = scanner.nextInt();
-                if (scan > 0) {
-                    return scan;
-                } else {
-                    System.out.println("Длина должна быть больше 0");
-                }
-            } else {
-                scanner.next();
-                System.out.println("Введите число");
+        FillType(int code, String description) {
+            this.code = code;
+            this.description = description;
+        }
+
+        public static FillType fromCode(int code) {
+            for (FillType type : values()) {
+                if (type.code == code) return type;
             }
+            throw new IllegalArgumentException("Неверный код: " + code);
+        }
+
+        public FillStrategy createStrategy() {
+            return switch (this) {
+                case MANUAL -> new ManualFill();
+                case FILE -> new FileFill();
+                case RANDOM -> new RandomFill();
+                case BACK -> null;
+            };
         }
     }
 
-    private static int setStrategy(Scanner scanner) {
+    public static List<Car> fillMain(Scanner scanner) {
+        System.out.println("Введите длину массива: (ввод 0 - вернутся в меню)");
+        int length = readIntInRange(scanner, 0, Integer.MAX_VALUE, "Введите положительное число");
+        if (length == 0) {
+            return null;
+        }
+
+        System.out.println("Выберите способ заполнения: 1 - вручную, 2 - из файла, 3 - рандомно, 0 - вернуться в меню");
+        int strategyCode = readIntInRange(scanner, 0, 3, "Неверное значение. Введите число от 0 до 3");
+
+        FillType fillType = FillType.fromCode(strategyCode);
+        if (fillType == FillType.BACK) {
+            return null;
+        }
+
+        CarFiller filler = new CarFiller(fillType.createStrategy());
+        return filler.fill(length);
+    }
+
+    private static int readIntInRange(Scanner scanner, int min, int max, String errorMessage) {
         while (true) {
             if (scanner.hasNextInt()) {
-                int strategy = scanner.nextInt();
-                if (strategy >= 1 && strategy <= 3) {
-                    return strategy;
-                } else {
-                    System.out.println("Неверное значение. Введите число от 1 до 3");
+                int value = scanner.nextInt();
+                scanner.nextLine();
+                if (value >= min && value <= max) {
+                    return value;
                 }
-            } else {
+                System.out.println(errorMessage);
+            } else if (scanner.hasNext()) {
                 scanner.next();
-                System.out.println("Введите число от 1 до 3");
+                System.out.println("Введите число");
+            } else {
+                throw new IllegalStateException("Входной поток завершён");
             }
         }
     }
