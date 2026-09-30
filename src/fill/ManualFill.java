@@ -5,10 +5,15 @@ import car.Car;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.IntPredicate;
 
 public class ManualFill implements FillStrategy {
+
     @Override
     public List<Car> fill(int length) {
+        if (length < 0) {
+            throw new IllegalArgumentException("length must be >= 0, was " + length);
+        }
         Scanner scanner = new Scanner(System.in);
         List<Car> result = new ArrayList<>();
 
@@ -17,9 +22,14 @@ public class ManualFill implements FillStrategy {
             System.out.println("Введите модель автомобиля:");
             String model = readModel(scanner);
             System.out.println("Введите мощность автомобиля, в числовом виде:");
-            int power = readPower(scanner);
-            System.out.println("Введите год производства, в числовом виде. Диапазоном от " + Car.MIN_YEAR + " до " + Car.MAX_YEAR + " года:");
-            int year = readYear(scanner);
+            // Сделал через лямбду. Должно работать без проблем. Будут замечания, пишите
+            int power = readInt(scanner, p -> p > 0,
+                    "Мощность должна быть больше 0. Введите мощность повторно");
+            System.out.println("Введите год производства, в числовом виде. Диапазоном от "
+                    + Car.MIN_YEAR + " до " + Car.MAX_YEAR + " года:");
+            int year = readInt(scanner, y -> y >= Car.MIN_YEAR && y <= Car.MAX_YEAR,
+                    "Год производства должен быть в диапазоне от "
+                            + Car.MIN_YEAR + " до " + Car.MAX_YEAR);
             result.add(new Car.Builder().setModel(model).setPower(power).setYear(year).build());
         }
         return result;
@@ -27,42 +37,28 @@ public class ManualFill implements FillStrategy {
 
     private String readModel(Scanner scanner) {
         while (true) {
-            String model = scanner.nextLine();
-            if (!model.trim().isEmpty()) {
+            String model = scanner.nextLine().trim();
+            if (!model.isEmpty()) {
                 return model;
             }
             System.out.println("Модель не может быть пустой. Введите модель повторно");
         }
     }
 
-    private int readPower(Scanner scanner) {
+    private int readInt(Scanner scanner, IntPredicate valid, String errorMessage) {
         while (true) {
             if (scanner.hasNextInt()) {
-                int power = scanner.nextInt();
+                int value = scanner.nextInt();
                 scanner.nextLine();
-                if (power > 0) {
-                    return power;
+                if (valid.test(value)) {
+                    return value;
                 }
-                System.out.println("Мощность должна быть больше 0. Введите мощность повторно");
-            } else {
+                System.out.println(errorMessage);
+            } else if (scanner.hasNext()) {
                 scanner.next();
-                System.out.println("Необходимо ввести числовое значение. Введите мощность повторно");
-            }
-        }
-    }
-
-    private int readYear(Scanner scanner) {
-        while (true) {
-            if (scanner.hasNextInt()) {
-                int year = scanner.nextInt();
-                scanner.nextLine();
-                if (year >= Car.MIN_YEAR && year <= Car.MAX_YEAR) {
-                    return year;
-                }
-                System.out.println("Год производства должен быть в диапазоне от " + Car.MIN_YEAR + " до " +Car.MAX_YEAR);
+                System.out.println("Необходимо ввести числовое значение.");
             } else {
-                scanner.next();
-                System.out.println("Необходимо ввести числовое значение. Введите год повторно");
+                throw new IllegalStateException("Входной поток завершён");
             }
         }
     }
