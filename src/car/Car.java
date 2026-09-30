@@ -1,7 +1,11 @@
-package Car;
+package car;
 
 public class Car {
-  private final int power;
+    public static final int MIN_YEAR = 1886;
+    public static final int MAX_YEAR = 2036;
+    public static final int MIN_POWER = 1;
+
+    private final int power;
     private final String model;
     private final int year;
 
@@ -55,15 +59,14 @@ public class Car {
         }
 
         private void validate() {
-            if (power <= 0) {
+            if (power < Car.MIN_POWER) {
                 throw new IllegalArgumentException("Мощность должна быть больше 0.");
             }
 
             if (model == null || model.trim().isEmpty()) {
                 throw new IllegalArgumentException("Модель не может быть пустой.");
             }
-
-            if (year < 1886 || year > 2036) {
+            if (year < Car.MIN_YEAR || year > Car.MAX_YEAR) {
                 throw new IllegalArgumentException("Некорректный год производства.");
             }
         }
