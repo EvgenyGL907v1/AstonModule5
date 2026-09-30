@@ -1,6 +1,6 @@
 package DZ5;
 
-
+import DZ5.Car;
 import java.util.Comparator;
 import java.util.List;
 
@@ -15,51 +15,17 @@ public class CarSorter implements SortStrategy {
 
     public void sortByModel(List<Car> list) {
         if (list == null || list.size() < 2) return;
-        quickSort(list, 0, list.size() - 1, new PowerComparator());
+        quickSort(list, 0, list.size() - 1, new ModelComparator());
     }
 
     public void sortByYear(List<Car> list) {
         if (list == null || list.size() < 2) return;
-        quickSort(list, 0, list.size() - 1, new PowerComparator());
+        quickSort(list, 0, list.size() - 1, new YearComparator());
     }
 
-    private static class PowerComparator implements Comparator<Car> {
-        @Override
-        public int  compare(Car c1, Car c2) {
-            if (c1.getPower() < c2.getPower()) return -1;
-            if (c1.getPower() > c2.getPower()) return 1;
-            return 0;
-        }
-    }
-
-    private static class ModelComparator implements Comparator<Car> {
     @Override
-    public int compare(Car c1, Car c2) {
-        String s1 = c1.getModel();
-        String s2 = c2.getModel();
+    public void sort(List list, Comparator comparator) {
 
-        int len1 = s1.length();
-        int len2 = s2.length();
-        int lim = Math.min(len1, len2);
-
-        for (int k = 0; k < lim; k++) {
-            char ch1 = s1.charAt(k);
-            char ch2 = s2.charAt(k);
-            if (ch1 != ch2) {
-                return ch1 - ch2;
-            }
-        }
-        return len1 - len2;
-    }
-    }
-
-    private static class YearComparator implements Comparator<Car> {
-        @Override
-    public int compare(Car c1, Car c2) {
-            if (c1.getYear() < c2.getYear()) return -1;
-            if (c1.getYear() > c2.getYear()) return 1;
-            return 0;
-        }
     }
 
     private void quickSort(List<Car> list, int low, int high, Comparator<Car> comparator) {
