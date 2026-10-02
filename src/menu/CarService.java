@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class CarService {
 
     public enum SortField {
-        POWER(1),
-        MODEL(2),
+        MODEL(1),
+        POWER(2),
         YEAR(3);
 
         private static final Map<Integer, SortField> BY_CODE =
@@ -74,8 +74,8 @@ public class CarService {
         if (isEmpty()) return;
         SortField field = SortField.fromCode(fieldCode);
         switch (field) {
-            case POWER -> sorter.sortByPower(cars);
             case MODEL -> sorter.sortByModel(cars);
+            case POWER -> sorter.sortByPower(cars);
             case YEAR  -> sorter.sortByYear(cars);
         }
     }

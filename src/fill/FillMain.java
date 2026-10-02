@@ -45,13 +45,13 @@ public class FillMain {
     }
 
     public static List<Car> fillMain(Scanner scanner) {
-        System.out.println("Введите длину массива: (ввод 0 - вернутся в меню)");
+        System.out.print("Введите длину массива: (ввод 0 - вернутся в меню): ");
         int length = readIntInRange(scanner, 0, Integer.MAX_VALUE, "Введите положительное число");
         if (length == 0) {
             return null;
         }
 
-        System.out.println("Выберите способ заполнения: 1 - вручную, 2 - из файла, 3 - рандомно, 0 - вернуться в меню");
+        System.out.print("Выберите способ заполнения: 1 - вручную, 2 - из файла, 3 - рандомно, 0 - вернуться в меню: ");
         int strategyCode = readIntInRange(scanner, 0, 3, "Неверное значение. Введите число от 0 до 3");
 
         FillType fillType = FillType.fromCode(strategyCode);
@@ -74,7 +74,7 @@ public class FillMain {
                 System.out.println(errorMessage);
             } else if (scanner.hasNext()) {
                 scanner.next();
-                System.out.println("Введите число");
+                System.out.print("Введите число: ");
             } else {
                 throw new IllegalStateException("Входной поток завершён");
             }
