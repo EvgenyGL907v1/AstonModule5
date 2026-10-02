@@ -29,7 +29,9 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Автомобиль {" + "мощность=" + power +  ", модель='" + model + '\'' + ", год=" + year +'}';
+        //return "Автомобиль {" + "мощность=" + power +  ", модель='" + model + '\'' + ", год=" + year +'}';
+        //return "модель '" + model + '\'' + "мощность=" + power + ", год " + year +'}';
+        return String.format("модель: %-15s  мощность: %-6d  год: %-5d ","'" + model + "'", power, year);
     }
 
     public static class Builder {

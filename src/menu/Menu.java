@@ -24,36 +24,34 @@ public class Menu {
 
     public void run() {
         while (true) {
+            System.out.println();
+            showCars();
             printMainMenu();
-            int choice = readChoice(0, 5);
+
+            System.out.print("Выберите пункт: ");
+            int choice = readChoice(0, 4);
 
             switch (choice) {
                 case 1 -> createCars();
-                case 2 -> showCars();
-                case 3 -> sortCarsMenu();
-                case 4 -> findCarMenu();
-                case 5 -> clearCars();
+                case 2 -> sortCarsMenu();
+                case 3 -> findCarMenu();
+                case 4 -> clearCars();
                 case 0 -> {
                     System.out.println("Выход.");
                     return;
                 }
             }
-
-            pause();
         }
     }
 
     private void printMainMenu() {
         System.out.println("""
-                Меню:
+                ============ Меню ============
                 1 - создать список автомобилей
-                2 - показать список автомобилей
-                3 - отсортировать список
-                4 - найти автомобиль
-                5 - очистить список
-                0 - выход
-                
-                Выберите пункт:\s""");
+                2 - отсортировать список
+                3 - найти автомобиль
+                4 - очистить список
+                0 - выход""");
     }
 
     private void createCars() {
@@ -67,6 +65,7 @@ public class Menu {
     }
 
     private void showCars() {
+        System.out.println("===== Список автомобилей =====");
         if (ensureNotEmpty()) {
             service.getCars().forEach(System.out::println);
         }
@@ -76,21 +75,28 @@ public class Menu {
         if (!ensureNotEmpty()) {
             return;
         }
-        System.out.println("Сортировать по: 1 - мощность, 2 - модель, 3 - год, 0 - вернуться в меню");
+
+        System.out.print("Сортировать по: 1 - модель, 2 - мощность, 3 - год, 0 - вернуться в меню: ");
         int choice = readChoice(0, 3);
         if (choice == 0) {
             return;
         }
+
+        System.out.print("Выберите направление: 1 - по возрастанию, 2 - по убыванию, 0 - вернуться в меню: ");
+        int direction = readChoice(0, 2);
+        if (direction == 0) {
+            return;
+        }
+
         service.sort(choice);
-        System.out.println("Список отсортирован. Результат:");
-        service.getCars().forEach(System.out::println);
+        System.out.println("Список отсортирован.");
     }
 
     private void findCarMenu() {
         if (!ensureNotEmpty()) {
             return;
         }
-        System.out.println("Введите модель для поиска:");
+        System.out.print("Введите модель для поиска: ");
         String model = scanner.nextLine();
 
         List<Car> found = service.find(model);
@@ -118,12 +124,6 @@ public class Menu {
         return true;
     }
 
-    private void pause() {
-        System.out.println("\nНажмите Enter для продолжения...");
-        scanner.nextLine();
-        System.out.println();
-    }
-
     private int readChoice(int min, int max) {
         while (true) {
             if (scanner.hasNextInt()) {
@@ -132,10 +132,10 @@ public class Menu {
                 if (choice >= min && choice <= max) {
                     return choice;
                 }
-                System.out.println("Введите число от " + min + " до " + max);
+                System.out.print("Введите число от " + min + " до " + max + ": ");
             } else if (scanner.hasNext()) {
                 scanner.next();
-                System.out.println("Введите число от " + min + " до " + max);
+                System.out.print("Введите число от " + min + " до " + max + ": ");
             } else {
                 throw new IllegalStateException("Входной поток завершён");
             }
