@@ -1,38 +1,70 @@
 package fill;
 
 import car.Car;
+import collection.CustomCollectors;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.IntPredicate;
+import java.util.stream.IntStream;
 
 public class ManualFill implements FillStrategy {
 
     @Override
     public List<Car> fill(int length) {
         if (length < 0) {
-            throw new IllegalArgumentException("length must be >= 0, was " + length);
+            throw new IllegalArgumentException(
+                    "length must be >= 0, was " + length
+            );
         }
-        Scanner scanner = new Scanner(System.in);
-        List<Car> result = new ArrayList<>();
 
-        for (int i = 0; i < length; i++) {
-            System.out.println("Заполните параметры для " + (i + 1) + " элемента массива");
-            System.out.println("Введите модель автомобиля:");
-            String model = readModel(scanner);
-            System.out.println("Введите мощность автомобиля, в числовом виде:");
-            // Сделал через лямбду. Должно работать без проблем. Будут замечания, пишите
-            int power = readInt(scanner, p -> p > 0,
-                    "Мощность должна быть больше 0. Введите мощность повторно");
-            System.out.println("Введите год производства, в числовом виде. Диапазоном от "
-                    + Car.MIN_YEAR + " до " + Car.MAX_YEAR + " года:");
-            int year = readInt(scanner, y -> y >= Car.MIN_YEAR && y <= Car.MAX_YEAR,
-                    "Год производства должен быть в диапазоне от "
-                            + Car.MIN_YEAR + " до " + Car.MAX_YEAR);
-            result.add(new Car.Builder().setModel(model).setPower(power).setYear(year).build());
-        }
-        return result;
+        Scanner scanner = new Scanner(System.in);
+
+        return IntStream.range(0, length)
+                .mapToObj(i -> readCar(scanner, i + 1))
+                .collect(CustomCollectors.toCustomList());
+    }
+
+    private Car readCar(Scanner scanner, int number) {
+        System.out.println(
+                "Заполните параметры для " + number + " элемента массива"
+        );
+
+        System.out.println("Введите модель автомобиля:");
+        String model = readModel(scanner);
+
+        System.out.println(
+                "Введите мощность автомобиля, в числовом виде:"
+        );
+
+        int power = readInt(
+                scanner,
+                p -> p > 0,
+                "Мощность должна быть больше 0. Введите мощность повторно"
+        );
+
+        System.out.println(
+                "Введите год производства, в числовом виде. Диапазоном от "
+                        + Car.MIN_YEAR
+                        + " до "
+                        + Car.MAX_YEAR
+                        + " года:"
+        );
+
+        int year = readInt(
+                scanner,
+                y -> y >= Car.MIN_YEAR && y <= Car.MAX_YEAR,
+                "Год производства должен быть в диапазоне от "
+                        + Car.MIN_YEAR
+                        + " до "
+                        + Car.MAX_YEAR
+        );
+
+        return new Car.Builder()
+                .setModel(model)
+                .setPower(power)
+                .setYear(year)
+                .build();
     }
 
     private String readModel(Scanner scanner) {
