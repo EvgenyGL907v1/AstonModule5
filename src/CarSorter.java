@@ -5,27 +5,58 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class CarSorter implements SortStrategy {
+public class CarSorter implements SortStrategy<Car> {
 
+public void sort(int choice, int direction, List<Car> list) {
+    if (list == null || list.size() < 2) return;
 
-    public void sortByPower(List<Car> list) {
+    switch (choice) {
+        case 1:
+            sortByModel(list, direction);
+            break;
+        case 2:
+            sortByPower(list, direction);
+            break;
+        case 3:
+            sortByYear(list, direction);
+            break;
+        default:
+            break;
+    }
+}
+
+    public void sortByPower(List<Car> list, int direction) {
         if (list == null || list.size() < 2) return;
-        quickSort(list, 0, list.size() - 1, new PowerComparator());
+        Comparator<Car> comparator = new PowerComparator();
+        if (direction == 2) {
+            comparator = comparator.reversed();
+        }
+        quickSort(list, 0, list.size() - 1, comparator);
     }
 
-    public void sortByModel(List<Car> list) {
+    public void sortByModel(List<Car> list, int direction) {
         if (list == null || list.size() < 2) return;
-        quickSort(list, 0, list.size() - 1, new ModelComparator());
+        Comparator<Car> comparator = new ModelComparator();
+        if (direction == 2) {
+            comparator = comparator.reversed();
+        }
+        quickSort(list, 0, list.size() - 1, comparator);
     }
 
-    public void sortByYear(List<Car> list) {
+    public void sortByYear(List<Car> list, int direction) {
         if (list == null || list.size() < 2) return;
-        quickSort(list, 0, list.size() - 1, new YearComparator());
+        Comparator<Car> comparator = new YearComparator();
+        if (direction == 2) {
+            comparator = comparator.reversed();
+        }
+        quickSort(list, 0, list.size() - 1, comparator);
     }
 
     @Override
-    public void sort(List list, Comparator comparator) {
-
+    public void sort(List<Car> list, Comparator<Car> comparator) {
+    if (list !=null && list.size() >=2 && comparator != null) {
+        quickSort(list, 0, list.size() - 1, comparator);
+        }
     }
 
     private void quickSort(List<Car> list, int low, int high, Comparator<Car> comparator) {
