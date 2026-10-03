@@ -2,8 +2,9 @@ package menu;
 
 import car.Car;
 import carSorter.CarSorter;
+import collection.CustomArrayList;
+import collection.CustomCollectors;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,7 @@ public class CarService {
     }
 
     private final CarSorter sorter;
-    private final List<Car> cars = new ArrayList<>();
+    private final List<Car> cars = new CustomArrayList<>();
     private boolean created = false;
 
     public CarService() {
@@ -50,10 +51,13 @@ public class CarService {
 
     public void setCars(List<Car> cars) {
         Objects.requireNonNull(cars, "cars");
+
         this.cars.clear();
-        for (Car car : cars) {
-            this.cars.add(Objects.requireNonNull(car, "car"));
-        }
+
+        cars.stream()
+                .map(car -> Objects.requireNonNull(car, "car"))
+                .forEach(this.cars::add);
+
         this.created = true;
     }
 
@@ -82,10 +86,10 @@ public class CarService {
 
     public List<Car> find(String model) {
         if (isEmpty() || model == null || model.isBlank()) {
-            return List.of();
+            return new CustomArrayList<>();
         }
         return cars.stream()
                 .filter(car -> model.equalsIgnoreCase(car.getModel()))
-                .toList();
+                .collect(CustomCollectors.toCustomList());
     }
 }
