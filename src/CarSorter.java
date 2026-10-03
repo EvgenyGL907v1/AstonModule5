@@ -1,6 +1,7 @@
-package DZ5;
+package carSorter;
 
-import DZ5.Car;
+import car.Car;
+
 import java.util.Comparator;
 import java.util.List;
 
