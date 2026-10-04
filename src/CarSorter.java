@@ -1,7 +1,6 @@
 package carSorter;
 
 import car.Car;
-
 import java.util.Comparator;
 import java.util.List;
 
