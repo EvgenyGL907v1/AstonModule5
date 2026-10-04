@@ -88,7 +88,7 @@ public class Menu {
             return;
         }
 
-        service.sort(choice);
+        service.sort(choice, direction);
         System.out.println("Список отсортирован.");
     }
 

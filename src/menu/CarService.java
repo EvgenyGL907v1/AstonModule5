@@ -1,7 +1,7 @@
 package menu;
 
-import car.Car;
 import carSorter.CarSorter;
+import car.Car;
 import collection.CustomArrayList;
 import collection.CustomCollectors;
 
@@ -74,13 +74,13 @@ public class CarService {
         created = false;
     }
 
-    public void sort(int fieldCode) {
+    public void sort(int fieldCode, int direction) {
         if (isEmpty()) return;
         SortField field = SortField.fromCode(fieldCode);
         switch (field) {
-            case MODEL -> sorter.sortByModel(cars);
-            case POWER -> sorter.sortByPower(cars);
-            case YEAR  -> sorter.sortByYear(cars);
+            case MODEL -> sorter.sortByModel(cars,direction);
+            case POWER -> sorter.sortByPower(cars, direction);
+            case YEAR  -> sorter.sortByYear(cars, direction);
         }
     }
 
