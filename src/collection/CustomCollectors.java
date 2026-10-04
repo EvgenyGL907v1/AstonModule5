@@ -1,4 +1,4 @@
-package collection;
+package Java5.src.collection;
 
 import java.util.stream.Collector;
 

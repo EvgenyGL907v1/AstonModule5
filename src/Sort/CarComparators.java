@@ -1,6 +1,6 @@
 package Java5.src.Sort;
 
-import Car.Car;
+import Java5.src.Car.Car;
 
 import java.util.Comparator;
 

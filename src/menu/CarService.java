@@ -1,9 +1,9 @@
-package menu;
+package Java5.src.menu;
 
-import car.Car;
-import carSorter.CarSorter;
-import collection.CustomArrayList;
-import collection.CustomCollectors;
+import Java5.src.Car.Car;
+import Java5.src.carSorter.CarSorter;
+import Java5.src.collection.CustomArrayList;
+import Java5.src.collection.CustomCollectors;
 
 import java.util.Arrays;
 import java.util.Collections;

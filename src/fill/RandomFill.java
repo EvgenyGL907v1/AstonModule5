@@ -1,7 +1,7 @@
-package fill;
+package Java5.src.fill;
 
-import car.Car;
-import collection.CustomCollectors;
+import Java5.src.Car.Car;
+import Java5.src.collection.CustomCollectors;
 
 import java.util.List;
 import java.util.Random;
@@ -15,14 +15,14 @@ public class RandomFill implements FillStrategy {
     private Car randomCar() {
         String model = MODELS[random.nextInt(MODELS.length)];
 
-        int power = random.nextInt(Car.MIN_POWER, 201);
+        int power = random.nextInt(Java5.src.Car.MIN_POWER, 201);
 
         int year = random.nextInt(
-                Car.MIN_YEAR,
-                Car.MAX_YEAR + 1
+                Java5.src.Car.MIN_YEAR,
+                Java5.src.Car.MAX_YEAR + 1
         );
 
-        return new Car.Builder()
+        return new Java5.src.Car.Builder()
                 .setModel(model)
                 .setPower(power)
                 .setYear(year)

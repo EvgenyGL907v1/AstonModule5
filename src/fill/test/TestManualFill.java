@@ -1,7 +1,7 @@
-package fill.test;
+package Java5.src.fill.test;
 
-import car.Car;
-import fill.ManualFill;
+import Java5.src.Car.Car;
+import Java5.src.fill.ManualFill;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

@@ -1,7 +1,7 @@
-package fill;
+package Java5.src.fill;
 
-import car.Car;
-import collection.CustomCollectors;
+import Java5.src.Car.Car;
+import Java5.src.collection.CustomCollectors;
 
 import java.util.List;
 import java.util.Scanner;
@@ -45,22 +45,22 @@ public class ManualFill implements FillStrategy {
 
         System.out.println(
                 "Введите год производства, в числовом виде. Диапазоном от "
-                        + Car.MIN_YEAR
+                        + Java5.src.Car.MIN_YEAR
                         + " до "
-                        + Car.MAX_YEAR
+                        + Java5.src.Car.MAX_YEAR
                         + " года:"
         );
 
         int year = readInt(
                 scanner,
-                y -> y >= Car.MIN_YEAR && y <= Car.MAX_YEAR,
+                y -> y >= Java5.src.Car.MIN_YEAR && y <= Java5.src.Car.MAX_YEAR,
                 "Год производства должен быть в диапазоне от "
-                        + Car.MIN_YEAR
+                        + Java5.src.Car.MIN_YEAR
                         + " до "
-                        + Car.MAX_YEAR
+                        + Java5.src.Car.MAX_YEAR
         );
 
-        return new Car.Builder()
+        return new Java5.src.Car.Builder()
                 .setModel(model)
                 .setPower(power)
                 .setYear(year)

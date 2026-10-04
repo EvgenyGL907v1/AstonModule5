@@ -1,4 +1,4 @@
-package collection;
+package Java5.src.collection;
 
 import java.util.AbstractList;
 import java.util.Arrays;

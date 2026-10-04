@@ -1,8 +1,8 @@
-package fill;
+package Java5.src.fill;
 
-import collection.CustomArrayList;
-import collection.CustomCollectors;
-import car.Car;
+import Java5.src.collection.CustomArrayList;
+import Java5.src.collection.CustomCollectors;
+import Java5.src.Car.Car;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -64,7 +64,7 @@ public class FileFill implements FillStrategy {
             );
 
             return Optional.of(
-                    new Car.Builder()
+                    new Java5.src.Car.Builder()
                             .setModel(model)
                             .setPower(power)
                             .setYear(year)

@@ -1,9 +1,12 @@
-package menu;
+/**
 
-import car.Car;
-import carSorter.CarSorter;
-import collection.CustomArrayList;
-import collection.CustomCollectors;
+
+package Java5.src;
+
+import Java5.src.Car.Car;
+import Java5.src.carSorter.CarSorter;
+import Java5.src.collection.CustomArrayList;
+import Java5.src.collection.CustomCollectors;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,3 +96,4 @@ public class CarService {
                 .collect(CustomCollectors.toCustomList());
     }
 }
+ **/
