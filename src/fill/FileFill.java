@@ -23,9 +23,12 @@ public class FileFill implements FillStrategy {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Введите путь к файлу:");
+            System.out.print("Введите путь к файлу (ввод 0 - вернутся в меню): ");
 
             String filePath = scanner.nextLine().trim();
+
+            if (filePath == "0")
+                return null;
 
             try (BufferedReader reader =
                          new BufferedReader(new FileReader(filePath))) {
@@ -43,6 +46,7 @@ public class FileFill implements FillStrategy {
             }
         }
     }
+
     private Optional<Car> parseLine(String line) {
         try {
             String[] fields = line.strip().split(",");

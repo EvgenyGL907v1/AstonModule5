@@ -1,4 +1,4 @@
-package carSorter;
+package carsorter;
 
 import car.Car;
 import java.util.Comparator;
@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CarSorter implements SortStrategy<Car> {
 
+    //Этот метод используют только тесты....
 public void sort(int choice, int direction, List<Car> list) {
     if (list == null || list.size() < 2) return;
 
@@ -52,6 +53,7 @@ public void sort(int choice, int direction, List<Car> list) {
         quickSort(list, 0, list.size() - 1, comparator);
     }
 
+    //А этот метод вообще никто не использует!
     @Override
     public void sort(List<Car> list, Comparator<Car> comparator) {
     if (list !=null && list.size() >=2 && comparator != null) {

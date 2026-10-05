@@ -1,6 +1,6 @@
 package menu;
 
-import carSorter.CarSorter;
+import carsorter.CarSorter;
 import car.Car;
 import collection.CustomArrayList;
 import collection.CustomCollectors;

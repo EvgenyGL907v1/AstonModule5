@@ -1,6 +1,7 @@
 package menu;
 
 import car.Car;
+import carsorter.even.EvenCarSorter;
 import file.CarFileWriter;
 import fill.FillMain;
 
@@ -78,6 +79,19 @@ public class Menu {
         if (!ensureNotEmpty()) {
             return;
         }
+
+//        System.out.print("Сортировать: 1 - только четные поля, 2 - все поля, 0 - вернуться в меню: ");
+//        int choiceSort = readChoice(0, 2);
+//        if (choiceSort == 0) {
+//            return;
+//        } else if (choiceSort == 1) {
+//            EvenCarSorter sorter = new EvenCarSorter();
+//        }
+
+//        Надо вызвать четную сортировку из доп. задания 1.
+
+
+
 
         System.out.print("Сортировать по: 1 - модель, 2 - мощность, 3 - год, 0 - вернуться в меню: ");
         int choice = readChoice(0, 3);

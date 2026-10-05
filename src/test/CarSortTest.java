@@ -1,7 +1,7 @@
-package fill.test;
+package test;
 
 import car.Car;
-import carSorter.CarSorter;
+import carsorter.CarSorter;
 
 import java.util.ArrayList;
 import java.util.List;

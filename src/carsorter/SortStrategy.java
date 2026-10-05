@@ -1,4 +1,4 @@
-package carSorter;
+package carsorter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,4 +7,5 @@ import java.util.List;
 public interface SortStrategy<T> {
 
     void sort(List<T> list, Comparator<T> comparator);
+    //void sort(int choice, int direction, List<T> list);
 }
