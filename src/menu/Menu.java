@@ -1,6 +1,7 @@
 package menu;
 
 import car.Car;
+import file.CarFileWriter;
 import fill.FillMain;
 
 import java.util.List;
@@ -29,13 +30,14 @@ public class Menu {
             printMainMenu();
 
             System.out.print("Выберите пункт: ");
-            int choice = readChoice(0, 4);
+            int choice = readChoice(0, 5);
 
             switch (choice) {
                 case 1 -> createCars();
                 case 2 -> sortCarsMenu();
                 case 3 -> findCarMenu();
                 case 4 -> clearCars();
+                case 5 -> saveToFileMenu();
                 case 0 -> {
                     System.out.println("Выход.");
                     return;
@@ -51,6 +53,7 @@ public class Menu {
                 2 - отсортировать список
                 3 - найти автомобиль
                 4 - очистить список
+                5 - сохранить коллекцию в файл
                 0 - выход""");
     }
 
@@ -110,6 +113,23 @@ public class Menu {
     private void clearCars() {
         service.clear();
         System.out.println("Список очищен.");
+    }
+
+    private void saveToFileMenu() {
+
+        if (!ensureNotEmpty()) {
+            return;
+        }
+
+        System.out.print("Введите путь к файлу для сохранения: ");
+        String path = scanner.nextLine().trim();
+
+        if (path.isEmpty()) {
+            System.out.println("Путь не может быть пустым.");
+            return;
+        }
+
+        CarFileWriter.appendCarsToFile(path, service.getCars());
     }
 
     private boolean ensureNotEmpty() {
