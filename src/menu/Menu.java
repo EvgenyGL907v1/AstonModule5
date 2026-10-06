@@ -2,7 +2,6 @@ package menu;
 
 import car.Car;
 import carcounter.CarCounter;
-import carsorter.even.EvenCarSorter;
 import file.CarFileWriter;
 import fill.FillMain;
 
@@ -82,19 +81,25 @@ public class Menu {
             return;
         }
 
-//        System.out.print("Сортировать: 1 - только четные поля, 2 - все поля, 0 - вернуться в меню: ");
-//        int choiceSort = readChoice(0, 2);
-//        if (choiceSort == 0) {
-//            return;
-//        } else if (choiceSort == 1) {
-//            EvenCarSorter sorter = new EvenCarSorter();
-//        }
+        System.out.print("""
+                Выберите тип сортировки:
+                1 - обычная (по всем элементам)
+                2 - только чётные значения
+                0 - вернуться в меню
+                Выберите пункт: """);
+        int sortType = readChoice(0, 2);
+        if (sortType == 0) {
+            return;
+        }
 
-//        Надо вызвать четную сортировку из доп. задания 1.
+        if (sortType == 1) {
+            regularSortMenu();
+        } else {
+            evenSortMenu();
+        }
+    }
 
-
-
-
+    private void regularSortMenu() {
         System.out.print("Сортировать по: 1 - модель, 2 - мощность, 3 - год, 0 - вернуться в меню: ");
         int choice = readChoice(0, 3);
         if (choice == 0) {
@@ -109,6 +114,22 @@ public class Menu {
 
         service.sort(choice, direction);
         System.out.println("Список отсортирован.");
+    }
+
+    private void evenSortMenu() {
+        System.out.print("Сортировать чётные по: 2 - мощность, 3 - год, 0 - вернуться в меню: ");
+        int choice = readChoice(0, 3);
+        if (choice == 0) {
+            return;
+        }
+        if (choice == 1) {
+            System.out.println("Модель — не числовое поле, сортировка чётных невозможна.");
+            return;
+        }
+
+        service.sortEven(choice);
+        String fieldName = (choice == 2) ? "мощности" : "годы";
+        System.out.println("Список отсортирован (только чётные " + fieldName + ").");
     }
 
     private void findCarMenu() {
@@ -154,14 +175,6 @@ public class Menu {
 
         System.out.println("Выполняется подсчет вхождений для " + sample);
         System.out.println("Количество вхождений: " + CarCounter.countMatches(service.getCars(), sample));
-
-
-//        List<Car> found = service.find(model);
-//        if (found.isEmpty()) {
-//            System.out.println("Автомобиль не найден.");
-//        } else {
-//            found.forEach(System.out::println);
-//        }
     }
 
     private void clearCars() {

@@ -1,15 +1,19 @@
 package menu;
 
-import carsorter.CarSorter;
 import car.Car;
+import carsorter.CarSorter;
+import carsorter.PowerComparator;
+import carsorter.YearComparator;
+import carsorter.even.EvenCarSorter;
 import collection.CustomArrayList;
-import collection.CustomCollectors;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 public class CarService {
@@ -24,6 +28,7 @@ public class CarService {
                         .collect(Collectors.toMap(f -> f.code, f -> f));
 
         private final int code;
+
         SortField(int code) {
             this.code = code;
         }
@@ -78,10 +83,35 @@ public class CarService {
         if (isEmpty()) return;
         SortField field = SortField.fromCode(fieldCode);
         switch (field) {
-            case MODEL -> sorter.sortByModel(cars,direction);
+            case MODEL -> sorter.sortByModel(cars, direction);
             case POWER -> sorter.sortByPower(cars, direction);
             case YEAR  -> sorter.sortByYear(cars, direction);
         }
+    }
+
+    // Сортировка только чётных значений выбранного числового поля. Нечётные элементы остаются на своих местах. fieldCode 2 - мощность, 3 - год
+    public void sortEven(int fieldCode) {
+        if (isEmpty()) return;
+
+        SortField field = SortField.fromCode(fieldCode);
+
+        ToIntFunction<Car> extractor;
+        Comparator<Car> comparator;
+
+        switch (field) {
+            case POWER -> {
+                extractor = Car::getPower;
+                comparator = new PowerComparator();
+            }
+            case YEAR -> {
+                extractor = Car::getYear;
+                comparator = new YearComparator();
+            }
+            default -> throw new IllegalArgumentException("Сортировка чётных поддерживается только для мощности и года");
+        }
+
+        EvenCarSorter evenSorter = new EvenCarSorter(extractor);
+        evenSorter.sort(cars, comparator);
     }
 
 //    public List<Car> find(String model) {
