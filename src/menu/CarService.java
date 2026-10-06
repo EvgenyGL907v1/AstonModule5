@@ -84,12 +84,12 @@ public class CarService {
         }
     }
 
-    public List<Car> find(String model) {
-        if (isEmpty() || model == null || model.isBlank()) {
-            return new CustomArrayList<>();
-        }
-        return cars.stream()
-                .filter(car -> model.equalsIgnoreCase(car.getModel()))
-                .collect(CustomCollectors.toCustomList());
-    }
+//    public List<Car> find(String model) {
+//        if (isEmpty() || model == null || model.isBlank()) {
+//            return new CustomArrayList<>();
+//        }
+//        return cars.stream()
+//                .filter(car -> model.equalsIgnoreCase(car.getModel()))
+//                .collect(CustomCollectors.toCustomList());
+//    }
 }

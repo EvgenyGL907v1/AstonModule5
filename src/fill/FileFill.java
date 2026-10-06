@@ -27,11 +27,10 @@ public class FileFill implements FillStrategy {
 
             String filePath = scanner.nextLine().trim();
 
-            if (filePath == "0")
+            if ("0".equals(filePath))
                 return null;
 
-            try (BufferedReader reader =
-                         new BufferedReader(new FileReader(filePath))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 
                 return reader.lines()
                         .map(this::parseLine)
@@ -40,9 +39,7 @@ public class FileFill implements FillStrategy {
                         .collect(CustomCollectors.toCustomList());
 
             } catch (IOException e) {
-                System.out.println(
-                        "Не удалось прочитать файл. Введите путь повторно."
-                );
+                System.out.println("Не удалось прочитать файл. Введите путь повторно.");
             }
         }
     }
@@ -50,22 +47,16 @@ public class FileFill implements FillStrategy {
     private Optional<Car> parseLine(String line) {
         try {
             String[] fields = line.strip().split(",");
-
             if (fields.length != 3) {
-                throw new IllegalArgumentException(
-                        "Ожидалось три поля"
-                );
+                throw new IllegalArgumentException("Ожидалось три поля");
             }
 
-            String model = extractValue(fields[0]);
-
-            int power = Integer.parseInt(
-                    extractValue(fields[1])
-            );
-
-            int year = Integer.parseInt(
-                    extractValue(fields[2])
-            );
+//            String model = extractValue(fields[0]);
+//            int power = Integer.parseInt(extractValue(fields[1]));
+//            int year = Integer.parseInt(extractValue(fields[2]));
+            String model = fields[0];
+            int power = Integer.parseInt(fields[1]);
+            int year = Integer.parseInt(fields[2]);
 
             return Optional.of(
                     new Car.Builder()
@@ -76,31 +67,25 @@ public class FileFill implements FillStrategy {
             );
 
         } catch (IllegalArgumentException e) {
-            System.out.println(
-                    "Строка: \"" + line + "\" не валидна, будет пропущена"
-            );
+            System.out.println("Строка: \"" + line + "\" не валидна, будет пропущена");
 
             return Optional.empty();
         }
     }
 
-    private String extractValue(String field) {
-        String[] parts = field.split(":", 2);
-
-        if (parts.length != 2) {
-            throw new IllegalArgumentException(
-                    "Некорректный формат поля: " + field
-            );
-        }
-
-        String value = parts[1].trim();
-
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Значение поля не может быть пустым"
-            );
-        }
-
-        return value;
-    }
+//    private String extractValue(String field) {
+//        String[] parts = field.split(":", 2);
+//
+//        if (parts.length != 2) {
+//            throw new IllegalArgumentException("Некорректный формат поля: " + field);
+//        }
+//
+//        String value = parts[1].trim();
+//
+//        if (value.isEmpty()) {
+//            throw new IllegalArgumentException("Значение поля не может быть пустым");
+//        }
+//
+//        return value;
+//    }
 }

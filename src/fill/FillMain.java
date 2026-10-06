@@ -47,15 +47,20 @@ public class FillMain {
     public static List<Car> fillMain(Scanner scanner) {
         System.out.print("Выберите способ заполнения: 1 - вручную, 2 - из файла, 3 - рандомно, 0 - вернуться в меню: ");
         int strategyCode = readIntInRange(scanner, 0, 3, "Неверное значение. Введите число от 0 до 3");
-
-        System.out.print("Введите длину массива: (ввод 0 - вернутся в меню): ");
-        int length = readIntInRange(scanner, 0, Integer.MAX_VALUE, "Введите положительное число");
-        if (length == 0) {
+        if (strategyCode == 0) {
             return null;
         }
 
         FillType fillType = FillType.fromCode(strategyCode);
         if (fillType == FillType.BACK) {
+            return null;
+        }
+
+        // Для заполнения из файла ограничивает количество загружаемых элементов
+        System.out.print("Введите длину массива: (ввод 0 - вернутся в меню): ");
+        int length = readIntInRange(scanner, 0, Integer.MAX_VALUE, "Введите положительное число");
+
+        if (length == 0) {
             return null;
         }
 

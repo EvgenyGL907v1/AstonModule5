@@ -12,8 +12,8 @@ public class CarFileWriter {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
 
             for (Car car : cars) {
-
-                writer.write(car.toString());
+                String carLine = car.getModel() + "," + car.getPower() + "," + car.getYear();
+                writer.write(carLine);
                 writer.newLine();
             }
 
