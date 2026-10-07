@@ -90,7 +90,7 @@ public class CarService {
     }
 
     // Сортировка только чётных значений выбранного числового поля. Нечётные элементы остаются на своих местах. fieldCode 2 - мощность, 3 - год
-    public void sortEven(int fieldCode) {
+    public void sortEven(int fieldCode, int direction) {
         if (isEmpty()) return;
 
         SortField field = SortField.fromCode(fieldCode);
@@ -107,19 +107,14 @@ public class CarService {
                 extractor = Car::getYear;
                 comparator = new YearComparator();
             }
-            default -> throw new IllegalArgumentException("Сортировка чётных поддерживается только для мощности и года");
+            default -> throw new IllegalArgumentException("Чётная сортировка поддерживается только для мощности и года.");
+        }
+
+        if (direction == 2) {
+            comparator = comparator.reversed();
         }
 
         EvenCarSorter evenSorter = new EvenCarSorter(extractor);
         evenSorter.sort(cars, comparator);
     }
-
-//    public List<Car> find(String model) {
-//        if (isEmpty() || model == null || model.isBlank()) {
-//            return new CustomArrayList<>();
-//        }
-//        return cars.stream()
-//                .filter(car -> model.equalsIgnoreCase(car.getModel()))
-//                .collect(CustomCollectors.toCustomList());
-//    }
 }

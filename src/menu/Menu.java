@@ -92,23 +92,23 @@ public class Menu {
             return;
         }
 
-        if (sortType == 1) {
-            regularSortMenu();
-        } else {
-            evenSortMenu();
-        }
-    }
-
-    private void regularSortMenu() {
-        System.out.print("Сортировать по: 1 - модель, 2 - мощность, 3 - год, 0 - вернуться в меню: ");
-        int choice = readChoice(0, 3);
-        if (choice == 0) {
-            return;
-        }
-
         System.out.print("Выберите направление: 1 - по возрастанию, 2 - по убыванию, 0 - вернуться в меню: ");
         int direction = readChoice(0, 2);
         if (direction == 0) {
+            return;
+        }
+
+        if (sortType == 1) {
+            regularSortMenu(direction);
+        } else {
+            evenSortMenu(direction);
+        }
+    }
+
+    private void regularSortMenu(int direction) {
+        System.out.print("Сортировать по: 1 - модель, 2 - мощность, 3 - год, 0 - вернуться в меню: ");
+        int choice = readChoice(0, 3);
+        if (choice == 0) {
             return;
         }
 
@@ -116,7 +116,7 @@ public class Menu {
         System.out.println("Список отсортирован.");
     }
 
-    private void evenSortMenu() {
+    private void evenSortMenu(int direction) {
         System.out.print("Сортировать чётные по: 2 - мощность, 3 - год, 0 - вернуться в меню: ");
         int choice = readChoice(0, 3);
         if (choice == 0) {
@@ -127,7 +127,7 @@ public class Menu {
             return;
         }
 
-        service.sortEven(choice);
+        service.sortEven(choice, direction);
         String fieldName = (choice == 2) ? "мощности" : "годы";
         System.out.println("Список отсортирован (только чётные " + fieldName + ").");
     }
