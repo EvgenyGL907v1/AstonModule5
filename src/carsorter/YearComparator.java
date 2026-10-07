@@ -1,4 +1,4 @@
-package carSorter;
+package carsorter;
 
 import car.Car;
 

@@ -1,4 +1,4 @@
-package carSorter;
+package carsorter;
 
 import java.util.Comparator;
 import java.util.List;
