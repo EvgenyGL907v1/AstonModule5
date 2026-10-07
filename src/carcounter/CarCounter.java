@@ -42,7 +42,6 @@ public class CarCounter {
             thread.start();
         }
 
-        // Ждём завершения всех потоков
         for (Thread thread : threads) {
             try {
                 thread.join();

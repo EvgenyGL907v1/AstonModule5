@@ -6,25 +6,6 @@ import java.util.List;
 
 
 public class CarSorter implements SortStrategy<Car> {
-
-public void sort(int choice, int direction, List<Car> list) {
-    if (list == null || list.size() < 2) return;
-
-    switch (choice) {
-        case 1:
-            sortByModel(list, direction);
-            break;
-        case 2:
-            sortByPower(list, direction);
-            break;
-        case 3:
-            sortByYear(list, direction);
-            break;
-        default:
-            break;
-    }
-}
-
     public void sortByPower(List<Car> list, int direction) {
         if (list == null || list.size() < 2) return;
         Comparator<Car> comparator = new PowerComparator();

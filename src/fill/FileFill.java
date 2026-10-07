@@ -51,9 +51,6 @@ public class FileFill implements FillStrategy {
                 throw new IllegalArgumentException("Ожидалось три поля");
             }
 
-//            String model = extractValue(fields[0]);
-//            int power = Integer.parseInt(extractValue(fields[1]));
-//            int year = Integer.parseInt(extractValue(fields[2]));
             String model = fields[0];
             int power = Integer.parseInt(fields[1]);
             int year = Integer.parseInt(fields[2]);
@@ -72,20 +69,4 @@ public class FileFill implements FillStrategy {
             return Optional.empty();
         }
     }
-
-//    private String extractValue(String field) {
-//        String[] parts = field.split(":", 2);
-//
-//        if (parts.length != 2) {
-//            throw new IllegalArgumentException("Некорректный формат поля: " + field);
-//        }
-//
-//        String value = parts[1].trim();
-//
-//        if (value.isEmpty()) {
-//            throw new IllegalArgumentException("Значение поля не может быть пустым");
-//        }
-//
-//        return value;
-//    }
 }

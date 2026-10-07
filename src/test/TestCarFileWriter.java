@@ -5,62 +5,96 @@ import collection.CustomArrayList;
 import file.CarFileWriter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TestCarFileWriter {
-    private static int passed = 0;
-    private static int failed = 0;
+public class TestCarFileWriter extends MyTest {
 
     public static void main(String[] args) {
+        testFileFormat();
+        testAppendMode();
+        testEmptyList();
+        testOverwriteIsAppendNotTruncate();
 
-        String testFileName = "testCars.txt";
+        result();
+    }
 
-        File file = new File(testFileName);
-        if (file.exists()) {
-            file.delete();
+    private static void testFileFormat() {
+        File file = tempFile();
+        List<Car> cars = new ArrayList<>();
+        cars.add(car("Toyota", 150, 2020));
+
+        CarFileWriter.appendCarsToFile(file.getAbsolutePath(), cars);
+
+        List<String> lines = readLines(file);
+        check(lines.size() == 1 && lines.get(0).equals("Toyota,150,2020"),
+                "testFileFormat");
+    }
+
+    private static void testAppendMode() {
+        File file = tempFile();
+        List<Car> first = new ArrayList<>();
+        first.add(car("Toyota", 150, 2020));
+        List<Car> second = new ArrayList<>();
+        second.add(car("BMW", 200, 2021));
+
+        CarFileWriter.appendCarsToFile(file.getAbsolutePath(), first);
+        CarFileWriter.appendCarsToFile(file.getAbsolutePath(), second);
+
+        List<String> lines = readLines(file);
+        check(lines.size() == 2
+                        && lines.get(0).equals("Toyota,150,2020")
+                        && lines.get(1).equals("BMW,200,2021"),
+                "testAppendMode");
+    }
+
+    private static void testEmptyList() {
+        File file = tempFile();
+        CarFileWriter.appendCarsToFile(file.getAbsolutePath(), new CustomArrayList<>());
+        List<String> lines = readLines(file);
+        check(lines.isEmpty(), "testEmptyList");
+    }
+
+    private static void testOverwriteIsAppendNotTruncate() {
+        File file = tempFile();
+        List<Car> cars = new ArrayList<>();
+        cars.add(car("A", 1, 1886));
+        cars.add(car("B", 2, 1887));
+
+        CarFileWriter.appendCarsToFile(file.getAbsolutePath(), cars);
+        CarFileWriter.appendCarsToFile(file.getAbsolutePath(), cars);
+
+        List<String> lines = readLines(file);
+        check(lines.size() == 4, "testOverwriteIsAppendNotTruncate");
+    }
+
+    private static Car car(String model, int power, int year) {
+        return new Car.Builder().setModel(model).setPower(power).setYear(year).build();
+    }
+
+    private static File tempFile() {
+        try {
+            File file = File.createTempFile("cars_writer_", ".txt");
+            file.deleteOnExit();
+            return file;
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось создать временный файл", e);
         }
+    }
 
-        Car car1 = new Car.Builder().setModel("Toyota").setPower(150).setYear(2020).build();
-        Car car2 = new Car.Builder().setModel("BMW").setPower(200).setYear(2021).build();
-
-        CustomArrayList<Car> list1 = new CustomArrayList<>();
-        list1.add(car1);
-
-        CustomArrayList<Car> list2 = new CustomArrayList<>();
-        list2.add(car2);
-
-
-        CarFileWriter.appendCarsToFile(testFileName, list1);
-        CarFileWriter.appendCarsToFile(testFileName, list2);
-
-        // читаем фыайл и смотрим строки
-        int lineCount = 0;
-        boolean hasToyota = false;
-        boolean hasBMW = false;
-
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                lineCount++;
-                if (line.contains("Toyota")) hasToyota = true;
-                if (line.contains("BMW")) hasBMW = true;
+    private static List<String> readLines(File file) {
+        try {
+            List<String> lines = new ArrayList<>();
+            for (String line : Files.readAllLines(file.toPath())) {
+                if (!line.isEmpty()) {
+                    lines.add(line);
+                }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл не найден!");
+            return lines;
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось прочитать файл", e);
         }
-
-        // вывод
-        if (lineCount == 2 && hasToyota && hasBMW) {
-            passed++;
-            System.out.println("PASS: testAppendMode");
-        } else {
-            failed++;
-            System.out.println("FAIL: testAppendMode");
-            System.out.println("Ожидалось 2 строки (Toyota и BMW). Получено строк: " + lineCount);
-        }
-
-        System.out.println("Пройдено: " + passed);
-        System.out.println("Упало: " + failed);
     }
 }
